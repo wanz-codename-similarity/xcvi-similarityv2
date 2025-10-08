@@ -1811,6 +1811,55 @@ async function outSenderGlobal() {
   log("User keluar dari sender global.");
 }
 
+/* ========== DISCONNECT SESSION (untuk user biasa) ========== */
+async function disconnectSession() {
+  const s = JSON.parse(localStorage.getItem("wanz_session") || "{}");
+
+  if (!s.name || !s.phone) {
+    showToast("Tidak ada sesi aktif untuk disconnect.");
+    return;
+  }
+
+  // Tampilkan konfirmasi kecil
+  const confirmOut = confirm(`Yakin ingin memutus sesi ${s.name} (${s.phone})?`);
+  if (!confirmOut) return;
+
+  try {
+    showOverlay(true);
+    modalHint.textContent = 'Memutus sesi...';
+    loader.style.display = 'block';
+
+    const res = await fetch("/api/connect/disconnect", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: s.name, phone: s.phone })
+    });
+
+    const data = await res.json();
+    showOverlay(false);
+    loader.style.display = 'none';
+
+    if (data.ok) {
+      showToast("Sesi berhasil diputus ✅");
+      log(`Sesi ${s.name} (${s.phone}) disconnected`);
+    } else {
+      showToast("Gagal memutus sesi ❌");
+      console.warn("Disconnect gagal:", data.error);
+    }
+  } catch (e) {
+    showOverlay(false);
+    loader.style.display = 'none';
+    showToast("Error koneksi saat disconnect ❌");
+    console.error("disconnectSession error:", e);
+  }
+
+  // Bersihkan session lokal dan update UI
+  localStorage.removeItem("wanz_session");
+  localStorage.removeItem("senderGlobal");
+  document.getElementById("sendSection").style.display = "none";
+  document.getElementById("pairSection").style.display = "block";
+  }
+  
 /* ========== Init on load ========== */
 (async function init(){
   // if already authed, show app
