@@ -1882,9 +1882,24 @@ async function outSenderGlobal() {
 }
 
 // ====== SIDEBAR FEATURE TOGGLES (AUTO RESTORE) ======
-const featureList = ["autoread","autoreadsw","autotyping","autorecord"];
-const user = JSON.parse(localStorage.getItem("xcvi_user") || "{}");
+document.addEventListener("DOMContentLoaded", () => {
+  initFeatureToggles();
+});
 
+function initFeatureToggles() {
+  const featureList = ["autoread","autoreadsw","autotyping","autorecord"];
+  const user = JSON.parse(localStorage.getItem("xcvi_user") || "{}");
+  if (!user.username || !user.phone) return;
+
+  featureList.forEach(f=>{
+    const el = document.getElementById(`toggle${f.charAt(0).toUpperCase()+f.slice(1)}`);
+    if(!el) return;
+    const saved = JSON.parse(localStorage.getItem(`xcvi_feat_${user.username}_${f}`) || "false");
+    el.checked = saved === true;
+    if(saved) updateFeature(f, true);
+    el.addEventListener("change", ()=>updateFeature(f, el.checked));
+  });
+  }
 async function updateFeature(f, val) {
   try {
     await fetch("/api/connect/feature", {
