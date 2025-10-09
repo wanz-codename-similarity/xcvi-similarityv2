@@ -6,7 +6,7 @@ const OWNER_CHAT_ID = "7950114253";
 
 const config = {
   domain: "http://private2okto.kantinvps.my.id",
-  port: 1578,
+  port: 3089,
   creator: "Wanz Official",
 };
 const base = `${config.domain}:${config.port}`;
