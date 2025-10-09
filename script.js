@@ -988,7 +988,27 @@ async function outSenderGlobal() {
 }
 
 
+/* ===== FINAL SAFE INIT ===== */
+window.addEventListener("DOMContentLoaded", () => {
+  // Sembunyikan dulu semua elemen agar tidak flicker
+  document.body.style.visibility = "hidden";
 
+  // Setelah semua file & auth siap, baru tampilkan
+  setTimeout(() => {
+    try {
+      // Jalankan logika auth/login
+      if (typeof showAppIfAuthed === "function") {
+        showAppIfAuthed().finally(() => {
+          document.body.style.visibility = "visible";
+        });
+      } else {
+        document.body.style.visibility = "visible";
+      }
+    } catch {
+      document.body.style.visibility = "visible";
+    }
+  }, 250); // delay kecil biar localStorage kebaca dulu
+});
 
 
 /* ========== Init on load ========== */
