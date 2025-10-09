@@ -20,14 +20,6 @@ const axiosOpt = {
 /* ====== IN-MEMORY USERS (example) ===*/
 /* ====== IN-MEMORY USERS ====== */
 let users = [
-  {
-    "username": "wanz",
-    "password": "123",
-    "role": "developer",
-    "createdAt": 1735689600000,
-    "expired": 1767225600000
-  }
-
 ];
 
 /* ====== HELPERS ====== */
