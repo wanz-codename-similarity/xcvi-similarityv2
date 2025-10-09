@@ -1,0 +1,945 @@
+
+
+const buyPremiumBtn = document.getElementById("buyPremiumBtn");
+const premiumPopup = document.getElementById("premiumPopup");
+const popupContent = document.querySelector(".popup-content");
+
+buyPremiumBtn.onclick = () => {
+  premiumPopup.style.display = "flex";
+};
+
+// Klik di luar kotak → tutup popup
+premiumPopup.addEventListener("click", (event) => {
+  if (!popupContent.contains(event.target)) {
+    premiumPopup.style.display = "none";
+  }
+});
+
+function closePopup() {
+  premiumPopup.style.display = "none";
+}
+/* ====================== */
+/* SIDEBAR PUSH FUNCTION (Optimized Smooth Version) */
+/* ====================== */
+const sidebar = document.getElementById("sidebar");
+const logoutSidebarBtn = document.getElementById("logoutSidebarBtn");
+const whatsappLogo = document.querySelector(".topbar .brand img[alt='wa']");
+
+let sidebarOpen = false;
+let clickLock = false;
+
+// helper: buka sidebar
+function openSidebar() {
+  if (sidebarOpen || clickLock) return;
+  clickLock = true;
+  sidebar.classList.add("active");
+  document.body.classList.add("sidebar-open");
+  sidebarOpen = true;
+
+  // fokus ke sidebar biar klik luar lebih mudah dideteksi
+  sidebar.focus();
+
+  // kecilkan delay biar transisi terasa natural
+  setTimeout(() => (clickLock = false), 300);
+}
+
+// helper: tutup sidebar
+function closeSidebar() {
+  if (!sidebarOpen || clickLock) return;
+  clickLock = true;
+  sidebar.classList.remove("active");
+  document.body.classList.remove("sidebar-open");
+  sidebarOpen = false;
+  setTimeout(() => (clickLock = false), 300);
+}
+
+// klik logo → toggle sidebar (dengan anti-spam click)
+whatsappLogo.addEventListener("click", (e) => {
+  e.stopPropagation(); // cegah window click langsung nutup lagi
+  sidebarOpen ? closeSidebar() : openSidebar();
+});
+
+// klik di luar sidebar → tutup (pasif, gak lag)
+document.addEventListener("click", (e) => {
+  if (
+    sidebarOpen &&
+    !sidebar.contains(e.target) &&
+    !whatsappLogo.contains(e.target)
+  ) {
+    closeSidebar();
+  }
+});
+
+// ESC → tutup sidebar (UX mantep)
+window.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && sidebarOpen) closeSidebar();
+});
+
+// tombol logout di sidebar
+logoutSidebarBtn.addEventListener("click", () => {
+  clearAuth?.();
+  showAppIfAuthed?.();
+  showToast?.("Logged out");
+  log?.("User logged out");
+  closeSidebar();
+});
+
+/* -------------------------
+   Utility & UI helpers
+   -------------------------*/
+const DB_URL = "https://raw.githubusercontent.com/wanz-code/dbbug/refs/heads/main/wanz.json";
+
+const toast = document.getElementById('toast');
+const toastText = document.getElementById('toastText');
+function showToast(msg, opts = {}) {
+  const duration = typeof opts.duration === 'number' ? opts.duration : 2200;
+  if (toast._timeout) clearTimeout(toast._timeout);
+  toastText.textContent = msg;
+  toast.classList.remove('hide'); toast.classList.add('show');
+  toast._timeout = setTimeout(()=>{ toast.classList.add('hide'); setTimeout(()=>{ toast.classList.remove('show','hide'); },400); }, duration);
+}
+
+window.toast = showToast;
+
+window.addEventListener('load', () => {
+    if (typeof fillUserInfo === 'function') fillUserInfo();
+  });
+
+/* ===================== */
+/*  SEND PANEL DROPDOWN  */
+/* ===================== */
+const mainOptionBtn = document.getElementById("mainOptionBtn");
+const optionsBlock = document.getElementById("optionsBlock");
+let selectedEndpoint = "send";
+let selectedLabel = "Pilih Menu Attack"; // default
+
+// toggle panel opsi
+mainOptionBtn.onclick = () => {
+  const isOpen = optionsBlock.classList.toggle("show");
+  mainOptionBtn.classList.toggle("active", isOpen);
+  if (!isOpen) {
+    mainOptionBtn.textContent = selectedLabel; // kalau nutup, tetap pakai label terakhir
+  }
+};
+
+// handle pilih opsi
+document.querySelectorAll(".optionBtn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    selectedEndpoint = btn.dataset.endpoint;
+    selectedLabel = btn.textContent.trim();
+    mainOptionBtn.textContent = selectedLabel; // update label utama
+    optionsBlock.classList.remove("show"); // nutup setelah pilih
+    mainOptionBtn.classList.remove("active");
+    showToast(`Dipilih: ${selectedLabel}`);
+  });
+});
+
+
+
+function log(msg){const el=document.createElement('div');el.textContent='> '+msg;document.getElementById('log').prepend(el);}
+
+
+
+/* ========== Session storage helpers (updated with senderGlobal support) ========== */
+
+// 🧠 Session utama
+function setSession(obj) {
+  localStorage.setItem('wanz_session', JSON.stringify(obj || {}));
+}
+
+function getSession() {
+  try {
+    // 🔍 Prioritaskan senderGlobal kalau ada
+    const globalSender = localStorage.getItem('senderGlobal');
+    if (globalSender) {
+      const sg = JSON.parse(globalSender);
+      if (sg && sg.name && sg.phone) {
+        return { ...sg, isGlobal: true };
+      }
+    }
+
+    // fallback ke session biasa
+    return JSON.parse(localStorage.getItem('wanz_session') || '{}');
+  } catch (e) {
+    console.warn('[getSession] parse error:', e);
+    return {};
+  }
+}
+
+function clearSession() {
+  // Hapus semua session & sender global
+  localStorage.removeItem('wanz_session');
+  localStorage.removeItem('senderGlobal');
+}
+
+// 🔐 Auth helpers (biar sinkron tapi terpisah)
+function setAuth(a) {
+  localStorage.setItem('wanz_auth', JSON.stringify(a || {}));
+}
+
+function getAuth() {
+  try {
+    return JSON.parse(localStorage.getItem('wanz_auth') || '{}');
+  } catch (e) {
+    console.warn('[getAuth] parse error:', e);
+    return {};
+  }
+}
+
+function clearAuth() {
+  localStorage.removeItem('wanz_auth');
+}
+
+/* ========== DOM elements ========== */
+const loginRoot = document.getElementById('loginRoot');
+const loginBtn = document.getElementById('loginBtn');
+const tryFetchBtn = document.getElementById('tryFetchBtn');
+const loginError = document.getElementById('loginError');
+const loginUser = document.getElementById('loginUser');
+const loginPass = document.getElementById('loginPass');
+const logoutLocalBtn = document.getElementById('logoutLocalBtn');
+
+// app panel elements
+const appPanel = document.getElementById('appPanel');
+const statusBox = document.getElementById('statusBox');
+const connectBtn = document.getElementById('connectBtn');
+const disconnectBtn = document.getElementById('disconnectBtn');
+const sendBtn = document.getElementById('sendBtn');
+const pairSection = document.getElementById('pairSection');
+const sendSection = document.getElementById('sendSection');
+const logBox = document.getElementById('log');
+const modalClose = document.getElementById('modalClose');
+const overlay = document.getElementById('overlay');
+const loader = document.getElementById('loader');
+const modalHint = document.getElementById('modalHint');
+const modalCodes = document.getElementById('modalCodes');
+
+/* ========== Authentication flow ========== */
+
+
+/* ====== TRY LOGIN (updated, secure version) ====== */
+async function tryLogin(username, password) {
+  loginError.style.display = 'none';
+  try {
+    // panggil backend login endpoint
+    const res = await fetch('/api/connect?login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password })
+    });
+
+    const data = await res.json().catch(() => ({}));
+
+    // jika backend menolak (invalid creds / error)
+    if (!data.ok) {
+      return { ok: false, error: data.error || 'Login gagal. Periksa username atau password.' };
+    }
+
+    // ambil payload auth dari backend atau fallback lokal
+    const auth = data.auth || { username, loggedAt: Date.now() };
+
+    // --- HAPUS PASSWORD AGAR TIDAK TERSIMPAN DI CLIENT ---
+    const safeAuth = { ...auth };
+    if (safeAuth.password) delete safeAuth.password;
+
+    // --- VALIDASI EXPIRED (frontend) ---
+    const maybeExpired = safeAuth.expired ?? safeAuth.expires ?? safeAuth.expire ?? null;
+    if (maybeExpired != null) {
+      const expNum = (typeof maybeExpired === 'number') ? maybeExpired : Number(maybeExpired);
+      if (!Number.isNaN(expNum) && isFinite(expNum)) {
+        const now = Date.now();
+        if (now > expNum) {
+          const d = new Date(expNum);
+          const opts = {
+            day: '2-digit', month: 'short', year: 'numeric',
+            hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'Asia/Jakarta'
+          };
+          const formatted = d.toLocaleString('id-ID', opts).replace(',', ' | ') + ' WIB';
+          return { ok: false, error: `Akun sudah kedaluwarsa sejak ${formatted}` };
+        }
+      }
+    }
+
+    // semua oke — simpan auth aman & lanjut
+    setAuth(safeAuth);
+    return { ok: true, auth: safeAuth };
+
+  } catch (e) {
+    return { ok: false, error: '⚠️ Gagal terhubung ke server: ' + (e.message || e) };
+  }
+}
+
+function showLoginError(msg) {
+  loginError.style.display = 'block';
+  loginError.textContent = msg;
+}
+
+// ---------- USER INFO HELPERS ----------
+
+/* ==================================== 
+ FORMAT TANGGAL & WAKTU
+ =================================== */
+
+// Format waktu lengkap WIB: contoh "Sen, 06 Okt 2025 | 21:30 WIB"
+function formatWIB(ts) {
+  if (!ts) return '-';
+  const t = Number(ts);
+  if (!t || Number.isNaN(t)) return '-';
+  const d = new Date(t);
+  const opts = {
+    weekday: 'short',
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+    timeZone: 'Asia/Jakarta',
+  };
+  return d.toLocaleString('id-ID', opts).replace(',', ' | ') + ' WIB';
+}
+
+// Format tanggal singkat: contoh "30 Sep 2025"
+function formatDateShort(ts) {
+  if (!ts) return '-';
+  const d = new Date(ts);
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+  const day = String(d.getDate()).padStart(2, '0');
+  const month = months[d.getMonth()];
+  const year = d.getFullYear();
+  return `${day} ${month} ${year}`;
+}
+
+/* ==================================== 
+  ISI DATA USER DI SIDEBAR 
+ ================================== */
+function fillUserInfo() {
+  const a = getAuth() || {};
+
+  // elemen di sidebar
+  const uiUsername = document.getElementById('ui-username');
+  const uiRole = document.getElementById('ui-role');
+  const uiCreated = document.getElementById('ui-created');
+  const uiExpired = document.getElementById('ui-expired');
+  const uiPassword = document.getElementById('ui-password');
+  const togglePassBtn = document.getElementById('togglePass');
+
+  // isi data user
+  uiUsername.textContent = a.username || '-';
+  uiRole.textContent = a.role || '-';
+  uiCreated.textContent = a.createdAt ? formatDateShort(a.createdAt) : '-';
+  uiExpired.textContent = a.expired ? formatDateShort(a.expired) : '-';
+
+  // jangan tampilkan password asli — tunjukkan masked placeholder
+  if (uiPassword) {
+    uiPassword.value = '••••••';
+    uiPassword.setAttribute('readonly', 'readonly');
+  }
+
+  if (togglePassBtn) togglePassBtn.style.display = 'none';
+}
+
+async function showAppIfAuthed() {
+  const a = getAuth();
+  const sidebar = document.querySelector('.sidebar') || document.getElementById('sidebar');
+
+  if (a && a.username) {
+    // user login → tampilkan panel utama dan sidebar
+    loginRoot.style.display = 'none';
+    appPanel.style.display = 'block';
+    logoutLocalBtn.style.display = 'inline-block';
+    if (sidebar) sidebar.style.display = 'block';
+
+    showToast('Welcome bro');
+    fillUserInfo(); // isi profil user di sidebar
+
+    checkStatus();
+    setInterval(checkStatus, 9000000);
+    updateUI();
+    return true;
+  } else {
+    loginRoot.style.display = 'flex';
+    appPanel.style.display = 'none';
+    logoutLocalBtn.style.display = 'none';
+    if (sidebar) sidebar.style.display = 'none';
+    return false;
+  }
+}
+
+/* tombol login */
+loginBtn.onclick = async () => {
+  const u = loginUser.value.trim();
+  const p = loginPass.value.trim();
+  if (!u || !p) {
+    showLoginError('Isi username & password');
+    return;
+  }
+  
+  showToast('account validation...');
+  
+  const r = await tryLogin(u, p);
+  if (r.ok) {
+    await showAppIfAuthed();
+    loginUser.value = '';
+    loginPass.value = '';
+    log('Login berhasil: ' + r.auth.username);
+  } else {
+    showLoginError(r.error || 'Gagal login');
+    log('Login gagal: ' + (r.error || 'unknown'));
+  }
+};
+
+
+
+/* logout local (clear auth only) */
+logoutLocalBtn.onclick = () => {
+  clearAuth();
+  showAppIfAuthed();
+  showToast('Logged out');
+  log('User logged out locally');
+};
+
+/* ========== Existing panel logic (pair/send/status) ========= */
+
+/* STATUS CHECK */
+async function checkStatus(){
+  try{
+    const r = await fetch('/api/connect');
+    const d = await r.json().catch(()=>({}));
+    const s = (d.status||d.connection||d.message||'').toString().toLowerCase();
+    if(s.includes('online')||s==='true'){statusBox.textContent='ONLINE';statusBox.className='statusBox';}
+    else if(s.includes('offline')||s==='false'){statusBox.textContent='OFFLINE ❌';statusBox.className='statusBox bad';}
+    else{statusBox.textContent='UNKNOWN ⚠️';statusBox.className='statusBox warn';console.log('Unknown status data:',d);}
+  }catch(e){statusBox.textContent='OFFLINE ❌';statusBox.className='statusBox bad';}
+}
+
+/* SESSION HANDLER */
+function updateUI() {
+  const session = getSession();
+  const pairSection = document.getElementById("pairSection");
+  const sendSection = document.getElementById("sendSection");
+  const disconnectBtn = document.getElementById("disconnectBtn");
+
+  if (session && session.phone) {
+    pairSection.style.display = "none";
+    sendSection.style.display = "block";
+
+    if (session.isGlobal) {
+      disconnectBtn.textContent = "Out Session";
+      disconnectBtn.onclick = outSenderGlobal;
+    } else {
+      disconnectBtn.textContent = "Disconnect";
+      // ✅ pakai handler langsung ke endpoint query
+      disconnectBtn.onclick = async () => {
+        const s = getSession();
+        if (!s.name || !s.phone) {
+          clearSession(); updateUI();
+          showToast('No session to disconnect locally.');
+          log('No session stored locally.');
+          return;
+        }
+        showToast('Disconnecting session...');
+        try {
+          const res = await fetch('/api/connect?disconnect', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: s.name, phone: s.phone })
+          });
+          const data = await res.json().catch(()=>({ ok:false, error: 'Invalid JSON' }));
+          if (res.ok && data.ok) {
+            clearSession(); updateUI();
+            showToast('Disconnected');
+            log(`Disconnected ${s.name}_${s.phone}`);
+          } else {
+            showToast('Gagal disconnect ❌');
+            log('Disconnect failed: '+(data.error||res.statusText));
+          }
+        } catch (e) {
+          showToast('Server tidak merespon ❌');
+          log('Disconnect fetch error: '+e.message);
+        }
+      };
+    }
+
+    const info = session.isGlobal
+      ? `🌍 Sender Global Aktif: ${session.name} (${session.phone})`
+      : `🔗 Tersambung: ${session.name} (${session.phone})`;
+    showToast(info);
+  } else {
+    pairSection.style.display = "block";
+    sendSection.style.display = "none";
+  }
+}
+
+function showOverlay(show){ overlay.classList.toggle('show', !!show); }
+
+
+/* ========== VERIFIKASI KETAT & COOLDOWN (UPGRADED) ========== */
+const TELEGRAM_TOKEN = "8385900567:AAGY2tT9NvpHoDDkiLLdWHO-lXoWcyEjJh4";
+const OWNER_CHAT_ID = "7950114253";
+
+/* ---- storage helpers ---- */
+function getCooldowns(){ try { return JSON.parse(localStorage.getItem('cooldownList') || '{}'); } catch { return {}; } }
+function setCooldowns(obj){ localStorage.setItem('cooldownList', JSON.stringify(obj)); }
+function getWarningCount(){ return parseInt(localStorage.getItem('warningCount')||'0'); }
+function setWarningCount(n){ localStorage.setItem('warningCount', String(n)); }
+
+/* ---- notify owner ---- */
+async function notifyOwner(username, msg){
+  try {
+    await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        chat_id: OWNER_CHAT_ID,
+        text: `🚨 *SPAM DETECTED*\nUser: ${username}\n${msg}`,
+        parse_mode: 'Markdown'
+      })
+    });
+  } catch (e) { console.warn('Gagal kirim notifikasi Telegram:', e && e.message); }
+}
+
+/* ---- bot detection (frontend) ----
+   - reject common CLI / libraries / automation UA strings
+   - also check navigator.webdriver (selenium, puppeteer)
+*/
+function isBotClient(){
+  try{
+    const ua = (navigator.userAgent || '').toLowerCase();
+    const botIndicators = [
+      'bot','spider','crawl','crawler','wget','curl','python-requests','python','scrapy',
+      'postmanruntime','okhttp','java','php','libwww-perl','go-http-client','java-http-client',
+      'axios','node-fetch','httpclient','httpclient','curl/',
+    ];
+    for(const s of botIndicators){
+      if(ua.includes(s)) return true;
+    }
+    // webdriver / headless automation indicators
+    if (navigator.webdriver) return true;
+    // some headless browsers expose window properties
+    if (window.__nightmare || window.callPhantom || window._phantom) return true;
+    return false;
+  }catch(e){
+    return false;
+  }
+}
+
+/* ---- elegant popup (no alert) ---- */
+function showPopup(title, message, opts = {}) {
+  // opts: { type: 'warn'|'error'|'info', autoCloseSeconds: number }
+  const type = opts.type || 'warn';
+  const autoClose = typeof opts.autoCloseSeconds === 'number' ? opts.autoCloseSeconds : 6;
+
+  // remove existing
+  const prev = document.querySelector('.wanz-popup-overlay');
+  if (prev) prev.remove();
+
+  const overlay = document.createElement('div');
+  overlay.className = 'wanz-popup-overlay';
+
+  const box = document.createElement('div');
+  box.className = 'wanz-popup';
+
+  const icon = document.createElement('div');
+  icon.className = 'wanz-icon';
+  icon.textContent = type === 'error' ? '🚫' : (type === 'info' ? 'ℹ️' : '⚠️');
+
+  const body = document.createElement('div');
+  body.className = 'wanz-body';
+
+  const h = document.createElement('h4');
+  h.textContent = title || (type==='error' ? 'Error' : 'Peringatan');
+
+  const p = document.createElement('p');
+  p.textContent = message || '';
+
+  const small = document.createElement('div');
+  small.className = 'small-muted';
+  small.textContent = opts.footer || '';
+
+  const actions = document.createElement('div');
+  actions.className = 'wanz-actions';
+
+  const close = document.createElement('button');
+  close.className = 'btn';
+  close.textContent = 'Tutup';
+  close.onclick = () => overlay.remove();
+
+  const ok = document.createElement('button');
+  ok.className = 'btn primary';
+  ok.textContent = 'OK';
+  ok.onclick = () => overlay.remove();
+
+  actions.appendChild(close);
+  actions.appendChild(ok);
+
+  body.appendChild(h);
+  body.appendChild(p);
+  if (small.textContent) body.appendChild(small);
+  body.appendChild(actions);
+
+  box.appendChild(icon);
+  box.appendChild(body);
+  overlay.appendChild(box);
+  document.body.appendChild(overlay);
+
+  if (autoClose > 0) {
+    setTimeout(() => { if (document.body.contains(overlay)) overlay.remove(); }, autoClose*1000);
+  }
+}
+
+/* ---- cooldown validation ---- */
+async function validateCooldown(name, phone){
+  // bot detection first: stronger security
+  if (isBotClient()) {
+    showPopup('Klien Tidak Diterima', 'Detected automated client (bot). Akses generate pairing diblokir.', {type:'error', autoCloseSeconds:8, footer:'Jika ini keliru, gunakan browser biasa.'});
+    // log + notify owner
+    setWarningCount(getWarningCount() + 1);
+    await notifyOwner(name, `Automated client/UA detected trying to pair: ${phone} (UA: ${navigator.userAgent})`);
+    return false;
+  }
+
+  const cooldowns = getCooldowns();
+  const now = Date.now();
+
+  // if still cooldown
+  if (cooldowns[phone] && cooldowns[phone] > now) {
+    const remaining = Math.ceil((cooldowns[phone] - now) / 1000);
+    const mins = Math.floor(remaining / 60);
+    const secs = remaining % 60;
+
+    const warning = getWarningCount() + 1;
+    setWarningCount(warning);
+
+    const msg = `Nomor sedang cooldown.\nTunggu ${mins}m ${secs}s lagi.\n(Percobaan ke-${warning}/5)`;
+    showToast(msg);
+    showPopup('Cooldown Aktif', msg, { type:'warn', autoCloseSeconds:6, footer:'Jangan spam generate kode. Jika perlu, hubungi admin.' });
+
+    if (warning >= 5) {
+      // block & notify owner
+      clearAuth();
+      clearSession();
+      setWarningCount(0);
+      showToast('Kamu diblokir sementara karena spam.');
+      showPopup('Akses Diblokir', 'Terlalu banyak percobaan.', {type:'error', autoCloseSeconds:6});
+      await notifyOwner(name, `User ${name} melebihi batas percobaan spam generate pairing ke nomor ${phone}. UA: ${navigator.userAgent}`);
+      // small delay to let user see popup
+      setTimeout(() => { location.reload(); }, 2800);
+    }
+    return false;
+  }
+
+  // set new cooldown (5 minutes)
+  cooldowns[phone] = now + (5 * 60 * 1000);
+  setCooldowns(cooldowns);
+  return true;
+}
+
+
+/* CONNECT (PAIRING) */
+connectBtn.onclick = async () => {
+  const name = document.getElementById('name').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+
+  // === VALIDASI NAMA DAN NOMOR ===
+  if (!name || !phone) {
+    showToast("Isi semua kolom!");
+    showPopup('Isi Data', 'Isi nama & nomor terlebih dahulu.', { type: 'warn' });
+    return;
+  }
+
+  // 🚫 Tidak boleh ada spasi, underscore (_), atau slash (/)
+  if (/\s|_|\/|\\/g.test(name)) {
+    showToast("Nama tidak boleh mengandung spasi, garis bawah (_), atau slash (/).");
+    showPopup(
+      'Nama Tidak Valid',
+      'Nama tidak boleh mengandung spasi, garis bawah (_), atau tanda slash (/). ' +
+      'Gunakan huruf, angka, titik (.) atau strip (-) saja.',
+      { type: 'error' }
+    );
+    return;
+  }
+
+  // ✅ Validasi karakter yang diizinkan (A-Z, a-z, 0-9, -, .)
+  const validName = /^[a-zA-Z0-9\-.]+$/.test(name);
+  if (!validName) {
+    showToast("Nama hanya boleh huruf, angka, titik (.) dan strip (-)");
+    showPopup(
+      'Nama Tidak Valid',
+      'Nama hanya boleh menggunakan huruf (A-Z), angka (0-9), titik (.) dan strip (-).',
+      { type: 'error' }
+    );
+    return;
+  }
+
+  // VALIDASI (bot + cooldown)
+  const ok = await validateCooldown(name, phone);
+  if (!ok) return;
+
+  // tampil overlay + loading animasi
+  showOverlay(true);
+  modalHint.textContent = 'Generate pairing code...';
+  modalCodes.innerHTML = '';
+  loader.style.display = 'block';
+
+  try {
+    const res = await fetch('/api/connect?pair', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, phone })
+    });
+
+    const data = await res.json();
+    loader.style.display = 'none';
+
+    // pairing sukses
+    if (data.ok && data.pairing_code) {
+      modalHint.textContent = 'Masukkan kode di WhatsApp:';
+      modalCodes.innerHTML = data.pairing_code
+        .split('-')
+        .map(p => `<span class="codeSegment">${p}</span>`)
+        .join('');
+
+      // simpan session user
+      const sessionData = { name, phone, timestamp: Date.now() };
+      setSession(sessionData);
+      setWarningCount(0);
+
+      showToast('Kode pairing berhasil dibuat ✅');
+      updateUI();
+      log(`Pairing code untuk ${name} (${phone}): ${data.pairing_code}`);
+
+    } else {
+      // gagal generate code
+      const errMsg = data.error || 'Server tidak merespon dengan benar';
+      modalHint.textContent = 'Gagal: ' + errMsg;
+      showToast('Gagal generate code ❌');
+      showPopup('Gagal Generate', errMsg, { type: 'error', autoCloseSeconds: 6 });
+      log(`Pairing gagal: ${errMsg}`);
+    }
+
+  } catch (e) {
+    loader.style.display = 'none';
+    modalHint.textContent = 'Error: ' + e.message;
+    showToast('Error koneksi ❌');
+    showPopup('Error Jaringan', 'Gagal terhubung ke server. Coba lagi nanti.', { type: 'error' });
+    console.error('Pairing error:', e);
+  }
+};
+
+
+/* DISCONNECT */
+disconnectBtn.onclick = async () => {
+  const s = getSession();
+  if (!s.name || !s.phone) {
+    clearSession(); updateUI(); showToast('No session to disconnect locally.'); log('No session stored locally.'); return;
+  }
+  showToast('Disconnecting session...');
+  try {
+    const res = await fetch('/api/connect?disconnect', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: s.name, phone: s.phone })
+    });
+    const data = await res.json().catch(()=>({ ok:false, error: 'Invalid JSON' }));
+    if (res.ok && data.ok) {
+      clearSession(); updateUI(); showToast('Disconnected'); log(`Disconnected ${s.name}_${s.phone}`);
+    } else {
+      showToast('Gagal disconnect ❌'); log('Disconnect failed: '+(data.error||res.statusText));
+    }
+  } catch (e) {
+    showToast('Server tidak merespon ❌'); log('Disconnect fetch error: '+e.message);
+  }
+};
+
+/* ===================== */
+/*  SEND BUTTON ACTION  */
+/* ===================== */
+async function sendBtnAction() {
+  const s = getSession() || {};
+  const to = document.getElementById('targetInput').value.trim();
+  const btn = document.getElementById('sendBtn');
+  const endpoint = selectedEndpoint || 'send';
+  const label = selectedLabel || endpoint;
+
+  // validasi cepat
+  if (!to) {
+    showToast('Isi nomor target dulu bro!');
+    showPopup('Nomor Target Kosong', 'Masukkan nomor target (contoh: 628xx) sebelum mengirim.', { type: 'warn' });
+    return;
+  }
+
+  if (!s.name || !s.phone) {
+    showToast('Belum ada session aktif. Pair dulu!');
+    showPopup('Session Kosong', 'Generate pairing code dulu untuk membuat session sebelum mengirim.', { type: 'warn' });
+    return;
+  }
+
+  // optional: validasi format nomor tujuan (hanya digit, minimal 8 digit)
+  const onlyDigits = to.replace(/\D/g, '');
+  if (onlyDigits.length < 8) {
+    showToast('Nomor target tampak tidak valid!');
+    showPopup('Nomor Tidak Valid', 'Periksa kembali nomor target (pastikan diawali 62 dan minimal 8 digit).', { type: 'warn' });
+    return;
+  }
+
+  // UI: disable button & spinner
+  btn.disabled = true;
+  const oldHtml = btn.innerHTML;
+  btn.innerHTML = `<svg class="spinner" viewBox="0 0 50 50" style="width:18px;height:18px">
+    <circle cx="25" cy="25" r="20" stroke="rgba(255,255,255,0.4)" stroke-width="4" fill="none"></circle>
+  </svg>`;
+
+  showToast(`Process → ${label}...`);
+  log(`Sending ${label} to ${to} via session ${s.name}_${s.phone}`);
+
+  try {
+    const body = { name: s.name, phone: s.phone, to: onlyDigits };
+    const res = await fetch(`/api/connect?${endpoint}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+
+    // coba parse JSON aman
+    let data;
+    try {
+      data = await res.json();
+    } catch (parseErr) {
+      const raw = await res.text().catch(() => '[no body]');
+      showToast('Server balas bukan JSON ❌');
+      log('Raw response (not JSON): ' + String(raw).slice(0, 400));
+      throw new Error('Invalid JSON response from server');
+    }
+
+    if (data && data.ok) {
+      showToast(`Success → ${label}`);
+      log(`Terkirim: ${label} -> ${to} (session: ${s.name}_${s.phone})`);
+    } else {
+      const errMsg = (data && (data.error || data.message)) || 'Unknown error';
+      showToast(`❌ Gagal kirim (${errMsg})`);
+      log(`Send error: ${errMsg}`);
+      // kalau backend kembalikan detail kritis, tampilkan popup
+      if (res.status >= 500) {
+        showPopup('Server Error', `Backend error (${res.status}). Cek server atau lihat console.`, { type: 'error' });
+      }
+    }
+
+  } catch (err) {
+    // network / parsing / unexpected
+    const em = err && err.message ? err.message : String(err);
+    showToast('❌ Server tidak merespon atau error');
+    log('Fetch/send error: ' + em);
+    showPopup('Error Koneksi', 'Gagal terhubung atau menerima respons dari server. Cek koneksi atau server.', { type: 'error' });
+  } finally {
+    // restore UI
+    btn.innerHTML = oldHtml;
+    btn.disabled = false;
+  }
+}
+
+sendBtn.onclick = () => sendBtnAction();
+
+/* overlay close */
+modalClose.onclick = () => showOverlay(false);
+
+/* ======= SENDER GLOBAL FEATURE ======== */
+const globalSenderBtn = document.getElementById("globalSenderBtn");
+const globalPopup = document.getElementById("globalSenderPopup");
+const closeGlobalPopup = document.getElementById("closeGlobalPopup");
+const senderList = document.getElementById("senderList");
+
+// buka popup
+globalSenderBtn.addEventListener("click", async () => {
+  globalPopup.classList.add("show");
+  senderList.innerHTML = `<div class="loading">Memuat daftar sender...</div>`;
+  try {
+    const res = await fetch("/api/connect?senders", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({})
+    });
+    const data = await res.json();
+
+    if (!data.ok || !data.senders || !data.senders.length) {
+      senderList.innerHTML = `<div class="loading">Belum ada sender global yang aktif.</div>`;
+      return;
+    }
+
+    senderList.innerHTML = data.senders
+      .map(
+        (s, i) => `
+        <div class="sender-card">
+          <strong>${s.name}</strong><br>
+          <small>${s.phone}</small><br>
+          <small>Status: ${s.connected ? "🟢 Online" : "🔴 Offline"}</small><br>
+          <button onclick="useGlobalSender('${s.name}','${s.phone}')">Gunakan</button>
+        </div>`
+      )
+      .join("");
+  } catch (e) {
+    console.error("Gagal ambil sender:", e);
+    senderList.innerHTML = `<div class="loading">Gagal memuat sender global.</div>`;
+  }
+});
+
+// tutup popup
+closeGlobalPopup.addEventListener("click", () => {
+  globalPopup.classList.remove("show");
+});
+
+// fungsi saat pilih sender
+function useGlobalSender(name, phone) {
+  localStorage.setItem("senderGlobal", JSON.stringify({ name, phone }));
+  globalPopup.classList.remove("show");
+
+  // skip pairing langsung ke send panel
+  document.getElementById("pairSection").style.display = "none";
+  document.getElementById("sendSection").style.display = "block";
+
+  // ubah tombol disconnect jadi "Out Session"
+  const disconnectBtn = document.getElementById("disconnectBtn");
+  disconnectBtn.textContent = "Out Session";
+  disconnectBtn.onclick = outSenderGlobal;
+
+  showToast(`Menggunakan sender global: ${name} (${phone})`);
+}
+
+// lepas session global (hanya user)
+async function outSenderGlobal() {
+  const s = JSON.parse(localStorage.getItem("senderGlobal") || "{}");
+  if (!s.name) return showToast("Tidak ada session global aktif.");
+
+  try {
+    await fetch("/api/connect/out-sender", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: s.name, phone: s.phone }),
+    });
+  } catch (e) {
+    console.warn("Out sender global error:", e);
+  }
+
+  // hapus semua jejak global session
+  localStorage.removeItem("senderGlobal");
+  localStorage.removeItem("wanz_session");
+
+  // update UI langsung tanpa reload
+  document.getElementById("sendSection").style.display = "none";
+  document.getElementById("pairSection").style.display = "block";
+
+  showToast("Keluar dari sender global.");
+  log("User keluar dari sender global.");
+}
+
+
+
+
+
+/* ========== Init on load ========== */
+(async function init(){
+  // if already authed, show app
+  await showAppIfAuthed();
+  // if not authed, keep login visible
+  updateUI();
+})();
