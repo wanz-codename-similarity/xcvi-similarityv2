@@ -21,47 +21,41 @@ const axiosOpt = {
 /* ====== IN-MEMORY USERS ====== */
 let users = [
   {
-    username: "wanz",
-    password: "123",
-    role: "developer",
-    createdAt: new Date("2025-01-01T00:00:00Z").getTime(),
-    expired: new Date("2026-01-01T00:00:00Z").getTime(),
+    "username": "wanz",
+    "password": "123",
+    "role": "developer",
+    "createdAt": 1735689600000,
+    "expired": 1767225600000
   },
   {
-    username: "mods1",
-    password: "mods123",
-    role: "mods",
-    createdAt: Date.now(),
-    expired: Date.now() + 60 * 24 * 60 * 60 * 1000, // 60 hari aktif
+    "username": "mods1",
+    "password": "mods123",
+    "role": "mods",
+    "createdAt": 1760052938024,
+    "expired": 1765236938024
   },
   {
-    username: "owner1",
-    password: "owner123",
-    role: "owner",
-    createdAt: Date.now(),
-    expired: Date.now() + 365 * 24 * 60 * 60 * 1000, // 1 tahun
+    "username": "owner1",
+    "password": "owner123",
+    "role": "owner",
+    "createdAt": 1760052938024,
+    "expired": 1791588938024
   },
   {
-    username: "partner1",
-    password: "partner123",
-    role: "partner",
-    createdAt: Date.now(),
-    expired: Date.now() + 180 * 24 * 60 * 60 * 1000, // 6 bulan
+    "username": "partner1",
+    "password": "partner123",
+    "role": "partner",
+    "createdAt": 1760052938024,
+    "expired": 1775604938024
   },
   {
-    username: "reseller1",
-    password: "reseller123",
-    role: "reseller",
-    createdAt: Date.now(),
-    expired: Date.now() + 90 * 24 * 60 * 60 * 1000, // 3 bulan
-  },
-  {
-    username: "premium1",
-    password: "premium123",
-    role: "premium",
-    createdAt: Date.now(),
-    expired: Date.now() + 30 * 24 * 60 * 60 * 1000, // 30 hari
+    "username": "reseller1",
+    "password": "reseller123",
+    "role": "reseller",
+    "createdAt": 1760052938024,
+    "expired": 1767828938024
   }
+
 ];
 
 /* ====== HELPERS ====== */
