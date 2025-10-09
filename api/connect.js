@@ -47,13 +47,6 @@ let users = [
     "role": "partner",
     "createdAt": 1760052938024,
     "expired": 1775604938024
-  },
-  {
-    "username": "reseller1",
-    "password": "reseller123",
-    "role": "reseller",
-    "createdAt": 1760052938024,
-    "expired": 1767828938024
   }
 
 ];
