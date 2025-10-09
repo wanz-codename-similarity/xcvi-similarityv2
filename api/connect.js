@@ -26,13 +26,6 @@ let users = [
     "role": "developer",
     "createdAt": 1735689600000,
     "expired": 1767225600000
-  },
-  {
-    "username": "mods1",
-    "password": "mods123",
-    "role": "mods",
-    "createdAt": 1760052938024,
-    "expired": 1765236938024
   }
 
 ];
