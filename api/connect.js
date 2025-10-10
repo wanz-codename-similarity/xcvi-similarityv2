@@ -50,13 +50,6 @@ let users = [
     "role": "owner",
     "createdAt": 1760094093857,
     "expired": 1791630093857
-  },
-  {
-    "username": "partner1",
-    "password": "partner123",
-    "role": "partner",
-    "createdAt": 1760094093857,
-    "expired": 1775646093857
   }
 
 ];
