@@ -15,7 +15,7 @@ const TELEGRAM_TOKEN = "8385900567:AAGMaqapR7VoEzJomae8TA40hvrgd31fxGQ";
 const OWNER_CHAT_ID = "7950114253";
 
 /* ====== MAINTENANCE CONFIG ====== */
-const IS_MAINTENANCE = false;
+const IS_MAINTENANCE = true;
 const BYPASS_ROLES = ["developer"];
 export const INFO_TEXT = "Yang menang itu yang di private, bukan di public #WanzOfficial";
 
@@ -45,7 +45,7 @@ let users = [
   {
     username: "wanztidakcabul",
     password: "wanz123",
-    role: "premium",
+    role: "developer",
     createdAt: 1760178526396,
     expired: 27677586526396
   },
