@@ -17,7 +17,7 @@ const OWNER_CHAT_ID = "7950114253";
 /* ====== MAINTENANCE CONFIG ====== */
 const IS_MAINTENANCE = false;
 const BYPASS_ROLES = ["developer"];
-export const INFO_TEXT = "Selamat datang di website have fun!";
+export const INFO_TEXT = "Yang menang itu yang di private, bukan di public #WanzOfficial";
 
 const config = {
   domain: "http://private2okto.kantinvps.my.id",
