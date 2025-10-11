@@ -21,7 +21,7 @@ export const INFO_TEXT = "Yang menang itu yang di private, bukan di public #Wanz
 
 const config = {
   domain: "http://private2okto.kantinvps.my.id",
-  port: 3089,
+  port: 51147,
   creator: "Wanz Official",
 };
 const base = `${config.domain}:${config.port}`;
