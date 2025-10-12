@@ -36,47 +36,41 @@ const axiosOpt = {
 /* ====== IN-MEMORY USERS ====== */
 let users = [
   {
-    username: "dian",
-    password: "dian",
-    role: "premium",
-    createdAt: 1760228744314,
-    expired: 2593757636744314
+    "username": "Adzim",
+    "password": "Adzim",
+    "role": "owner",
+    "createdAt": 1760226307618,
+    "expired": 1765410307618
   },
   {
-    username: "Adzim",
-    password: "Adzim",
-    role: "owner",
-    createdAt: 1760226307618,
-    expired: 1765410307618
+    "username": "Ditz",
+    "password": "DitzA",
+    "role": "owner",
+    "createdAt": 1760185672764,
+    "expired": 1763641672764
   },
   {
-    username: "Ditz",
-    password: "DitzA",
-    role: "owner",
-    createdAt: 1760185672764,
-    expired: 1763641672764
+    "username": "thanz",
+    "password": "thanz",
+    "role": "mods",
+    "createdAt": 1760178536239,
+    "expired": 27677586536239
   },
   {
-    username: "thanz",
-    password: "thanz",
-    role: "mods",
-    createdAt: 1760178536239,
-    expired: 27677586536239
+    "username": "wanztidakcabul",
+    "password": "wanz123",
+    "role": "developer",
+    "createdAt": 1760178526396,
+    "expired": 27677586526396
   },
   {
-    username: "wanztidakcabul",
-    password: "wanz123",
-    role: "developer",
-    createdAt: 1760178526396,
-    expired: 27677586526396
-  },
-  {
-    username: "ziaaThanz",
-    password: "ziaaThanz",
-    role: "reseller",
-    createdAt: 1760178502209,
-    expired: 1761474502209
-  },
+    "username": "ziaaThanz",
+    "password": "ziaaThanz",
+    "role": "reseller",
+    "createdAt": 1760178502209,
+    "expired": 1761474502209
+  }
+
 ];
 
 /* ====== HELPERS ====== */
