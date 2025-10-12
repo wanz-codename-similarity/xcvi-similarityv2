@@ -15,7 +15,7 @@ const TELEGRAM_TOKEN = "8385900567:AAGMaqapR7VoEzJomae8TA40hvrgd31fxGQ";
 const OWNER_CHAT_ID = "7950114253";
 
 /* ====== MAINTENANCE CONFIG ====== */
-const IS_MAINTENANCE = false;
+const IS_MAINTENANCE = true;
 const BYPASS_ROLES = ["developer"];
 export const INFO_TEXT = "Yang menang itu yang di private, bukan yg di public ~ Wanz";
 
