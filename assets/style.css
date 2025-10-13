@@ -285,6 +285,18 @@ button.ghost:hover {background:rgba(0,170,255,0.08);}
 .meta{display:flex;justify-content:space-between;gap:10px;margin-top:8px;}
 .meta button{flex:1}
 
+.login-banner {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.login-banner img {
+  max-width: 100%;
+  width: 964px;
+  height: auto;
+  border-radius: 8px; /* opsional biar lebih halus */
+            }
+
 /* ===== SIDEBAR (Final Wide + Perfect Alignment) ===== */
 /* CSS */
 #sidebar {
