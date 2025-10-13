@@ -269,8 +269,14 @@ button.ghost:hover {background:rgba(0,170,255,0.08);}
 
 /* ===== LOGIN CARD ===== */
 .login-root {
-  display:flex; align-items:center; justify-content:center;
-  width:100%; min-height:calc(100vh - 70px); z-index:10;
+.login-root {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: calc(100vh - 70px);
+  z-index: 10;
+  position: relative; /* penting biar banner absolut nempel di root */
 }
 .login-card {
   width:100%; max-width:420px;
@@ -285,11 +291,15 @@ button.ghost:hover {background:rgba(0,170,255,0.08);}
 .meta{display:flex;justify-content:space-between;gap:10px;margin-top:8px;}
 .meta button{flex:1}
 
+
+
 .login-banner {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 65px; /* geser sedikit di bawah infoBanner */
+  left: 50%;
+  transform: translateX(-50%);
   width: 100%;
+  max-width: 420px; /* biar sejajar sama login-card */
   z-index: 1;
 }
 
@@ -297,7 +307,9 @@ button.ghost:hover {background:rgba(0,170,255,0.08);}
   width: 100%;
   height: auto;
   display: block;
-  opacity: 0.25; /* opsional, biar gak ganggu teks login */
+  opacity: 0.35; /* biar keliatan tapi gak ganggu teks login */
+  border-radius: 12px; /* selaras sama login-card */
+  box-shadow: 0 0 16px rgba(0,170,255,0.2);
 }
 
 /* ===== SIDEBAR (Final Wide + Perfect Alignment) ===== */
