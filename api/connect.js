@@ -20,7 +20,7 @@ const BYPASS_ROLES = ["developer"];
 export const INFO_TEXT = "open request text";
 
 const config = {
-  domain: "http://priv.kantinvps.my.id",
+  domain: "http://renznorusuh.mafiapnel.my.id",
   port: 4751,
   creator: "Wanz Official",
 };
