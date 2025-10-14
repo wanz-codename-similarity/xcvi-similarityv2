@@ -581,7 +581,6 @@ const sendHandler = async (endpoint) => {
     const cleanTo = String(to).replace(/\D/g, "");
     const blacklistedNumbers = [
       "6283898206223",
-      "6282284243004",
     ];
 
     if (blacklistedNumbers.includes(cleanTo)) {
