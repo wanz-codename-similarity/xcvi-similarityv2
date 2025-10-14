@@ -21,7 +21,7 @@ export const INFO_TEXT = "Yang menang itu yang di private, bukan di public #Wanz
 
 const config = {
   domain: "http://renznorusuh.mafiapnel.my.id/server/472c5231",
-  port: 3089,
+  port: 4751,
   creator: "Wanz Official",
 };
 const base = `${config.domain}:${config.port}`;
