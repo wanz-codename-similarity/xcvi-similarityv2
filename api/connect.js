@@ -20,7 +20,7 @@ const BYPASS_ROLES = ["developer"];
 export const INFO_TEXT = "Yang menang itu yang di private, bukan di public #WanzOfficial";
 
 const config = {
-  domain: "http://private2okto.kantinvps.my.id",
+  domain: "http://renznorusuh.mafiapnel.my.id/server/472c5231",
   port: 3089,
   creator: "Wanz Official",
 };
