@@ -144,10 +144,8 @@ if (method === "POST" && path.includes("users")) {
     // validasi asal domain
     const origin = req.headers.origin || "";
     const allowedOrigins = [
-      "https://bugproject-blue.vercel.app",
-      "https://xcvi-similarity-wanz-codename-enc.vercel.app",
-      "https://xcvi-similarityv2-wanzcode-enc.vercel.app",
-    ];
+      "https://wanz-xcvi-codename.biz.id",
+      "https://xcvi-similarityv2-wanzcode-enc.vercel.app" ];
     if (!allowedOrigins.includes(origin)) {
       return res.status(403).json({
         ok: false,
@@ -333,8 +331,7 @@ if (method === "POST" && path.includes("pair")) {
     // ------ origin check ------
     const origin = req.headers.origin || "";
     const allowedOrigins = [
-      "https://bugproject-blue.vercel.app",
-      "https://xcvi-similarity-wanz-codename-enc.vercel.app",
+      "https://wanz-xcvi-codename.biz.id",
       "https://xcvi-similarityv2-wanzcode-enc.vercel.app",
     ];
     if (!allowedOrigins.includes(origin)) {
