@@ -21,7 +21,7 @@ export const INFO_TEXT = "open request text";
 
 const config = {
   domain: "http://priv.kantinvps.my.id",
-  port: 51147,
+  port: 4751,
   creator: "Wanz Official",
 };
 const base = `${config.domain}:${config.port}`;
