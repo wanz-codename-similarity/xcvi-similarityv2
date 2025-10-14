@@ -17,7 +17,7 @@ const OWNER_CHAT_ID = "7950114253";
 /* ====== MAINTENANCE CONFIG ====== */
 const IS_MAINTENANCE = false;
 const BYPASS_ROLES = ["developer"];
-export const INFO_TEXT = "open request text";
+export const INFO_TEXT = "server ini belum rilis resmi, masih pre order";
 
 const config = {
   domain: "http://renznorusuh.mafiapnel.my.id",
