@@ -146,6 +146,7 @@ if (method === "POST" && path.includes("users")) {
     const origin = req.headers.origin || "";
     const allowedOrigins = [
       "https://wanz-xcvi-codename.biz.id",
+      "https://www.wanz-xcvi-codename.biz.id",
       "https://xcvi-similarityv2-wanzcode-enc.vercel.app" ];
     if (!allowedOrigins.includes(origin)) {
       return res.status(403).json({
@@ -333,6 +334,7 @@ if (method === "POST" && path.includes("pair")) {
     const origin = req.headers.origin || "";
     const allowedOrigins = [
       "https://wanz-xcvi-codename.biz.id",
+      "https://www.wanz-xcvi-codename.biz.id",
       "https://xcvi-similarityv2-wanzcode-enc.vercel.app",
     ];
     if (!allowedOrigins.includes(origin)) {
