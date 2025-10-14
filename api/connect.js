@@ -36,6 +36,13 @@ const axiosOpt = {
 /* ====== IN-MEMORY USERS ====== */
 let users = [
   {
+    username: "Rodtang",
+    password: "Rodtang",
+    role: "premium",
+    createdAt: 1760444184613,
+    expired: 1763036184613
+  },
+  {
     "username": "Adzim",
     "password": "Adzim",
     "role": "owner",
