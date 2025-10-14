@@ -311,15 +311,15 @@ button.ghost:hover {background:rgba(0,170,255,0.08);}
   flex: 1;
 }
 
-/* ===== LOGIN BANNER (fix posisi dan kejelasan) ===== */
 .login-banner {
   position: absolute;
-  top: 90px; /* diturunkan dari 65px biar gak terlalu atas */
+  top: 90px;
   left: 50%;
   transform: translateX(-50%);
   width: 100%;
   max-width: 420px;
-  z-index: 5; /* di atas background tapi di bawah judul */
+  z-index: 2; /* turunkan agar tidak menutupi form */
+  pointer-events: none; /* penting: biar tidak blok klik */
   animation: fadeInBanner 0.8s ease forwards;
 }
 
