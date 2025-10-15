@@ -20,7 +20,7 @@ const BYPASS_ROLES = ["developer"];
 export const INFO_TEXT = "Yang menang itu yang di private, bukan di public #WanzOfficial";
 
 const config = {
-  domain: "http://renznorusuh.mafiapnel.my.id",
+  domain: "http://rinjani.kandigpanel.my.id",
   port: 33537,
   creator: "Wanz Official",
 };
