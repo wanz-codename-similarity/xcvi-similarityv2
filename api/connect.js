@@ -20,7 +20,7 @@ const BYPASS_ROLES = ["developer"];
 export const INFO_TEXT = "kurangin yg basa basi, utamakan yg pasti pasti";
 
 const config = {
-  domain: "http://rinjani.kandigpanel.my.id",
+  domain: "http://asepserver.publicserver.my.id",
   port: 2539,
   creator: "Wanz Official",
 };
