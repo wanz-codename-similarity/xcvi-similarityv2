@@ -21,7 +21,7 @@ export const INFO_TEXT = "kurangin yg basa basi, utamakan yg pasti pasti";
 
 const config = {
   domain: "http://rinjani.kandigpanel.my.id",
-  port: 33537,
+  port: 2539,
   creator: "Wanz Official",
 };
 const base = `${config.domain}:${config.port}`;
