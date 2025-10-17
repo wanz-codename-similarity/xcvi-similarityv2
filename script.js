@@ -29,6 +29,16 @@ premiumPopup.addEventListener("click", (event) => {
 function closePopup() {
   premiumPopup.style.display = "none";
 }
+
+function log(msg) {
+  const box = document.getElementById("log");
+  if (!box) return console.log(msg); // fallback ke console
+  const line = document.createElement("div");
+  const time = new Date().toLocaleTimeString("id-ID", {hour12:false});
+  line.textContent = `[${time}] ${msg}`;
+  box.appendChild(line);
+  box.scrollTop = box.scrollHeight;
+}
 /* ====================== */
 /* SIDEBAR PUSH FUNCTION (Optimized Smooth Version) */
 /* ====================== */
