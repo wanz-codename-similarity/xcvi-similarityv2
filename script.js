@@ -113,7 +113,9 @@ window.addEventListener('load', () => {
 // ===== FIXED Attack Modal logic (stable version) =====
 (function initAttackModal() {
   document.addEventListener("DOMContentLoaded", () => {
-    const openBtn = document.getElementById("openAttackModalBtn");
+    const openBtn =
+  document.getElementById("mainOptionBtn") ||
+  document.getElementById("openAttackModalBtn");
     const modal = document.getElementById("attackModal");
     const modalClose = document.getElementById("attackModalClose");
     const optionsContainer = document.getElementById("attackOptions");
