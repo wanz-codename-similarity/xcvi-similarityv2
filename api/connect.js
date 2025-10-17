@@ -17,7 +17,7 @@ const OWNER_CHAT_ID = "7950114253";
 /* ====== MAINTENANCE CONFIG ====== */
 const IS_MAINTENANCE = false;
 const BYPASS_ROLES = ["developer"];
-export const INFO_TEXT = "kurangin yg basa basi, utamakan yg pasti pasti";
+export const INFO_TEXT = "server tinggal finishing saja, enjoy!";
 
 const config = {
   domain: "http://asepserver.publicserver.my.id",
