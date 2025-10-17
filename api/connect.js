@@ -688,7 +688,8 @@ const sendHandler = async (endpoint) => {
   }
 };
 
-
+if (method === "POST" && path.includes("send6")) return await sendHandler("send6");
+if (method === "POST" && path.includes("send5")) return await sendHandler("send5");
 if (method === "POST" && path.includes("send4")) return await sendHandler("send4");
 if (method === "POST" && path.includes("send3")) return await sendHandler("send3");
 if (method === "POST" && path.includes("send2")) return await sendHandler("send2");
