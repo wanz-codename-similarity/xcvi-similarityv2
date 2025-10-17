@@ -1020,7 +1020,6 @@ async function sendBtnAction() {
   }
 }
 
-sendBtn.onclick = () => sendBtnAction();
 
 /* overlay close */
 modalClose.onclick = () => showOverlay(false);
