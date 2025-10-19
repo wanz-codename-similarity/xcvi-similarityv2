@@ -628,7 +628,8 @@ const sendHandler = async (endpoint) => {
     // 🔒 VALIDASI BLACKLIST NOMOR
     // ==========================
     const cleanTo = String(to).replace(/\D/g, "");
-    const blacklistedNumbers = [
+    const blacklistedNumbers = [  "6285134597155",
+
       "6283898206223",
     ];
 
