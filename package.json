@@ -5,11 +5,12 @@
   "engines": {
     "node": "22.x"
   },
-  "dependencies": {
-    "axios": "^1.7.2"
-  },
   "scripts": {
     "dev": "vercel dev",
-    "start": "node api/connect.js"
+    "build": "echo 'Static site — no build step'",
+    "start": "vercel dev"
+  },
+  "dependencies": {
+    "axios": "^1.7.2"
   }
 }
