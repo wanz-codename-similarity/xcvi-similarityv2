@@ -652,6 +652,99 @@ if (method === "POST" && path.includes("out-sender")) {
     });
   }
 }
+              // ==========================================
+// 🔍 CEKBAN (Check Status WA Ban)
+// ==========================================
+if (method === "POST" && path.includes("cekban")) {
+  try {
+    // --- origin validation ---
+    let origin = (req.headers.origin || "").replace(/\/$/, "");
+    const allowedOrigins = [
+      "https://bugproject-blue.vercel.app",
+      "https://xcvi-similarity-wanz-codename-enc.vercel.app",
+      "https://xcvi-similarityv2-wanzcode-enc.vercel.app",
+      "https://wanz-xcvi-codename.biz.id",
+      "https://www.wanz-xcvi-codename.biz.id",
+    ];
+
+    const isAllowed = allowedOrigins.some(o => origin.startsWith(o));
+    if (origin && !isAllowed) {
+      return res.status(403).json({
+        ok: false,
+        error: `Unauthorized access from ${origin}`,
+        creator: config.creator,
+      });
+    }
+
+    // --- ambil input ---
+    const body = await parseBody(req);
+    const { phone } = body || {};
+
+    if (!phone) {
+      return res.status(400).json({
+        ok: false,
+        error: "Parameter 'phone' wajib diisi",
+        creator: config.creator,
+      });
+    }
+
+    // --- validasi format ---
+    const cleanPhone = String(phone).replace(/\D/g, "");
+    if (!cleanPhone.startsWith("62") || cleanPhone.length < 9) {
+      return res.status(400).json({
+        ok: false,
+        error: "Nomor tidak valid. Gunakan format internasional (62...)",
+        creator: config.creator,
+      });
+    }
+
+    // ======================
+    //  🔗  OPSI 1: lewat backend (axios)
+    // ======================
+    let resp;
+    try {
+      resp = await axios.post(`${base}/cekban`, { number: cleanPhone }, axiosOpt);
+    } catch (err) {
+      console.error("[CEKBAN] axios error:", err.message);
+      return res.status(502).json({
+        ok: false,
+        error: "Gagal menghubungi backend cekban",
+        creator: config.creator,
+      });
+    }
+
+    const data = resp.data || {};
+
+    // ======================
+    //  🔗  OPSI 2 (jika mau langsung pakai sock):
+    // ======================
+    // const result = await sock.checkStatusWA(cleanPhone);
+    // return res.status(200).json({
+    //   ok: true,
+    //   phone: cleanPhone,
+    //   result,
+    //   creator: config.creator,
+    // });
+
+    // --- kirim respons normal ---
+    return res.status(200).json({
+      ok: true,
+      phone: cleanPhone,
+      isBanned: !!data.isBanned,
+      isNeedOfficialWa: !!data.isNeedOfficialWa,
+      raw: data,
+      creator: config.creator,
+    });
+
+  } catch (err) {
+    console.error("[CEKBAN] Error:", err.message);
+    return res.status(500).json({
+      ok: false,
+      error: err.message || "Gagal memproses permintaan cekban",
+      creator: config.creator,
+    });
+  }
+  }
 
 const sendHandler = async (endpoint) => {
   try {
