@@ -1,14 +1,14 @@
 {
   "builds": [
     {
-      "src": "api/connect.js",
-      "use": "@vercel/node"
+      "src": "index.html",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
-    { "src": "/(.*)", "dest": "/api/connect.js" }
-  ],
-  "env": {
-    "NODE_ENV": "production"
-  }
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ]
 }
