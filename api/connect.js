@@ -21,7 +21,7 @@ export const INFO_TEXT = "server tinggal finishing saja, enjoy!";
 
 const config = {
   domain: "http://asepserver.publicserver.my.id",
-  port: 2040,
+  port: 3168,
   creator: "Wanz Official",
 };
 const base = `${config.domain}:${config.port}`;
