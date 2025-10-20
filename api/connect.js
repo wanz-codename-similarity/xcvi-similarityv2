@@ -20,7 +20,7 @@ const BYPASS_ROLES = ["developer"];
 export const INFO_TEXT = "server tinggal finishing saja, enjoy!";
 
 const config = {
-  domain: "http://privateevisconixv1.hostingers-vvip.my.id",
+  domain: "http://titanic.kandigpanel.my.id",
   port: 24663,
   creator: "Wanz Official",
 };
