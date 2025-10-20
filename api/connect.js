@@ -20,7 +20,7 @@ const BYPASS_ROLES = ["developer"];
 export const INFO_TEXT = "server tinggal finishing saja, enjoy!";
 
 const config = {
-  domain: "http://asepserver.publicserver.my.id",
+  domain: "http://privateevisconixv1.hostingers-vvip.my.id",
   port: 3168,
   creator: "Wanz Official",
 };
