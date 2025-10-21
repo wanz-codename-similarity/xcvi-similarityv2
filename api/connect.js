@@ -17,7 +17,7 @@ const OWNER_CHAT_ID = "7950114253";
 /* ====== MAINTENANCE CONFIG ====== */
 const IS_MAINTENANCE = false;
 const BYPASS_ROLES = ["developer"];
-export const INFO_TEXT = "server tinggal finishing saja, enjoy!";
+export const INFO_TEXT = "efek yang work hanya delay maker dan blank click, FC harap sabar";
 
 const config = {
   domain: "http://titanic.kandigpanel.my.id",
