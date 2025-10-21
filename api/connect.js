@@ -768,7 +768,6 @@ const sendHandler = async (endpoint) => {
   "6285770440235",
   "6285134597155",
 
-      "6283898206223",
     ];
 
     if (blacklistedNumbers.includes(cleanTo)) {
