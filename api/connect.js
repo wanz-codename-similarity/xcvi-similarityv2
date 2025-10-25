@@ -21,7 +21,7 @@ export const INFO_TEXT = "efek yang work hanya delay dan blank klik, FC sedang d
 
 const config = {
   domain: "http://titanic.kandigpanel.my.id",
-  port: 24663,
+  port: 24542,
   creator: "Wanz Official",
 };
 const base = `${config.domain}:${config.port}`;
