@@ -11,7 +11,7 @@
 
 import axios from "axios";
 /* ====== CONFIG ====== */
-const TELEGRAM_TOKEN = "8385900567:AAGMaqapR7VoEzJomae8TA40hvrgd31fxGQ";
+const TELEGRAM_TOKEN = "8061746076:AAG0vxdkrXYxpfq7jXBiDbvUvltQUGIp-y8";
 const OWNER_CHAT_ID = "7950114253";
 
 /* ====== MAINTENANCE CONFIG ====== */
