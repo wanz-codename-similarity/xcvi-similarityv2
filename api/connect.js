@@ -21,7 +21,7 @@ export const INFO_TEXT = "Promo up reseller 60k pm 6283898206223";
 
 const config = {
   domain: "http://titanic.kandigpanel.my.id",
-  port: 24663,
+  port: 3000,
   creator: "Wanz Official",
 };
 const base = `${config.domain}:${config.port}`;
