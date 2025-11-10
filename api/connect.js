@@ -15,7 +15,7 @@ const TELEGRAM_TOKEN = "8061746076:AAG0vxdkrXYxpfq7jXBiDbvUvltQUGIp-y8";
 const OWNER_CHAT_ID = "7950114253";
 
 /* ====== MAINTENANCE CONFIG ====== */
-const IS_MAINTENANCE = true;
+const IS_MAINTENANCE = false;
 const BYPASS_ROLES = ["developer"];
 export const INFO_TEXT = "Promo up reseller 60k pm 6283898206223";
 
